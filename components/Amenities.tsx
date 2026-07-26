@@ -5,7 +5,7 @@ import Reveal from './Reveal'
 
 export default function Amenities() {
   return (
-    <section className="section section--alt amenities" id="amenities">
+    <section className="section amenities" id="amenities">
       <div className="section__inner">
         <Reveal>
           <p className="eyebrow">Everything you need</p>
