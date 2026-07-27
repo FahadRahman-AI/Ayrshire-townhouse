@@ -8,9 +8,10 @@ export default function Preloader() {
   const [hide, setHide] = useState(false)
 
   useEffect(() => {
+    const ready = () => document.documentElement.classList.add('ready')
     const seen = sessionStorage.getItem('et-loaded')
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (seen || reduce) { setHide(true); return }
+    if (seen || reduce) { setHide(true); ready(); return }
 
     document.body.style.overflow = 'hidden'
     const start = performance.now()
@@ -24,7 +25,8 @@ export default function Preloader() {
         setDone(true)
         sessionStorage.setItem('et-loaded', '1')
         document.body.style.overflow = ''
-        setTimeout(() => setHide(true), 1100)
+        // reveal the hero title only once the curtain has lifted
+        setTimeout(() => { setHide(true); ready() }, 950)
       }
     }
     raf = requestAnimationFrame(tick)

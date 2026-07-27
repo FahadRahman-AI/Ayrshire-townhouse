@@ -1,13 +1,12 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import { PROPERTY } from '@/lib/property'
 import Marquee from './Marquee'
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)
-  const parts = PROPERTY.name.split(' ')
-  const last = parts.pop()
+  const words = PROPERTY.name.split(' ')
   const attrs = [
     'Cedar barrel sauna',
     'Cold plunge',
@@ -19,11 +18,12 @@ export default function Hero() {
     'Superhost',
   ]
 
-  // Cursor-reactive parallax — watermark and title drift subtly, opposite ways.
   useEffect(() => {
+    // Safety: guarantee the title reveals even if the preloader never fires.
+    const t = setTimeout(() => document.documentElement.classList.add('ready'), 4200)
+
     const el = ref.current
-    if (!el) return
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return () => clearTimeout(t)
     const onMove = (e: PointerEvent) => {
       const cx = e.clientX / window.innerWidth - 0.5
       const cy = e.clientY / window.innerHeight - 0.5
@@ -33,7 +33,7 @@ export default function Hero() {
       el.style.setProperty('--ty', `${cy * -10}px`)
     }
     window.addEventListener('pointermove', onMove, { passive: true })
-    return () => window.removeEventListener('pointermove', onMove)
+    return () => { clearTimeout(t); window.removeEventListener('pointermove', onMove) }
   }, [])
 
   return (
@@ -47,8 +47,12 @@ export default function Hero() {
         {PROPERTY.rating} · {PROPERTY.reviewCount} reviews{PROPERTY.superhost ? ' · Superhost' : ''}
       </p>
 
-      <h1 className="hero__title">
-        {parts.join(' ')} <em>{last}</em>
+      <h1 className="hero__title" aria-label={PROPERTY.name}>
+        {words.map((w, i) => (
+          <span className={`word ${i === words.length - 1 ? 'word--accent' : ''}`} key={i} aria-hidden>
+            <span className="word__inner" style={{ '--wi': i } as CSSProperties}>{w}</span>
+          </span>
+        ))}
       </h1>
 
       <div className="hero__row">

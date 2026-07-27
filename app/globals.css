@@ -61,9 +61,12 @@ body::after {
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 
 .word { display: inline-block; vertical-align: top; overflow: hidden; padding: 0.06em 0.03em 0.18em 0; margin-bottom: -0.18em; }
-.word__inner { display: inline-block; transform: translateY(115%); opacity: 0; animation: word-rise 1.05s var(--ease-expo) both; animation-delay: calc(var(--wi) * 0.09s + 0.15s); }
+.hero__title .word { padding-right: 0.22em; }
+.word__inner { display: inline-block; transform: translateY(116%); opacity: 0; }
+html.ready .word__inner { animation: word-rise 1.1s var(--ease-expo) both; animation-delay: calc(var(--wi) * 0.10s + 0.05s); }
+.word--accent .word__inner { font-style: italic; color: var(--brass); }
 @keyframes word-rise { to { transform: none; opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .word__inner { animation: none; transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .word__inner { transform: none; opacity: 1; } }
 
 /* ─── Shared type primitives ─────────────────────────────────── */
 .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; font-weight: 500; letter-spacing: 0.26em; text-transform: uppercase; color: var(--brass); }
