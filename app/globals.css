@@ -113,7 +113,18 @@ body::after {
 .section--panel { background: var(--cream); color: var(--forest); }
 .section--deep { background: var(--forest-2); }
 .section__num { font-family: var(--font-fraunces), serif; font-style: italic; font-size: 0.95rem; color: var(--brass); }
-.section__inner { max-width: 1320px; margin: 0 auto; }
+.section__inner { max-width: 1320px; margin: 0 auto; position: relative; z-index: 1; }
+/* clip only where a ghost is used — never on .booking (sticky reserve card) */
+.section--clip { overflow: hidden; }
+.section__ghost {
+  position: absolute; z-index: 0; pointer-events: none; user-select: none; white-space: nowrap;
+  font-family: var(--font-fraunces), serif; font-style: italic; font-weight: 300;
+  line-height: 0.66; letter-spacing: -0.05em;
+  color: transparent; -webkit-text-stroke: 1px rgba(200, 161, 92, 0.11);
+}
+.section--panel .section__ghost { -webkit-text-stroke-color: rgba(20, 36, 28, 0.10); }
+.section__ghost--spaces { top: 4%; right: -1.5%; font-size: clamp(9rem, 27vw, 32rem); }
+.section__ghost--num { bottom: -8%; left: -1%; font-size: clamp(10rem, 32vw, 38rem); }
 .section__title { font-family: var(--font-fraunces), serif; font-weight: 300; font-size: clamp(2.1rem, 6vw, 5rem); line-height: 1; letter-spacing: -0.03em; }
 
 /* ─── Manifesto ──────────────────────────────────────────────── */

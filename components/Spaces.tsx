@@ -5,7 +5,8 @@ import Reveal from './Reveal'
 
 export default function Spaces() {
   return (
-    <section className="section spaces" id="spaces">
+    <section className="section section--clip spaces" id="spaces">
+      <span className="section__ghost section__ghost--spaces" aria-hidden>Rooms</span>
       <div className="section__inner">
         <div className="spaces__head">
           <p className="eyebrow">01 — The spaces</p>

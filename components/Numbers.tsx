@@ -52,7 +52,8 @@ function Stat({ v, k, dp = 0, prefix = '', suffix, raw = false }: StatDef) {
 
 export default function Numbers() {
   return (
-    <section className="section section--deep" id="numbers">
+    <section className="section section--deep section--clip" id="numbers">
+      <span className="section__ghost section__ghost--num" aria-hidden>02</span>
       <div className="section__inner">
         <div className="spaces__head">
           <p className="eyebrow">02 — By the numbers</p>
