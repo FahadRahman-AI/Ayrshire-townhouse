@@ -43,6 +43,14 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* ─── Preloader ──────────────────────────────────────────────── */
+.preloader { position: fixed; inset: 0; z-index: 1000; background: var(--forest-2); display: grid; place-items: center; transition: transform 1.05s var(--ease-in-out); will-change: transform; }
+.preloader--done { transform: translateY(-101%); }
+.preloader__name { position: absolute; top: 2.2rem; left: 0; right: 0; text-align: center; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--cream-2); }
+.preloader__meta { position: absolute; bottom: 2.2rem; left: 0; right: 0; text-align: center; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--cream-2); }
+.preloader__count { font-family: var(--font-fraunces), serif; font-weight: 300; font-style: italic; font-size: clamp(5rem, 19vw, 17rem); line-height: 1; color: var(--cream); letter-spacing: -0.03em; }
+.preloader__bar { position: absolute; bottom: 0; left: 0; height: 2px; background: var(--brass); }
+
 /* ─── Cursor ─────────────────────────────────────────────────── */
 .cursor { position: fixed; top: 0; left: 0; width: 8px; height: 8px; border: 1px solid var(--brass); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; }
 @media (pointer: coarse) { .cursor { display: none; } html, html * { cursor: auto; } }
