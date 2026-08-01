@@ -2,8 +2,9 @@
 // Launches the dev server, captures a full-page screenshot with Playwright, tears
 // the server down. Self-contained so it never depends on a session-managed server.
 //
-//   node screenshot.js            → screenshots/latest.png   (full page, 1440w)
-//   node screenshot.js --mobile   → also screenshots/latest-mobile.png (390w)
+//   node screenshot.js                → screenshots/latest.png   (full page, 1440w)
+//   node screenshot.js --mobile       → also screenshots/latest-mobile.png (390w)
+//   node screenshot.js --path=/tour   → capture a specific route instead of /
 
 const { chromium } = require('playwright')
 const { spawn } = require('child_process')
@@ -12,6 +13,7 @@ const path = require('path')
 const http = require('http')
 
 const PORT = 3123
+const ROUTE = (process.argv.find((a) => a.startsWith('--path=')) || '--path=/').slice(7)
 const BASE = `http://localhost:${PORT}`
 const OUT = path.join(__dirname, 'screenshots')
 const MOBILE = process.argv.includes('--mobile')
@@ -34,7 +36,7 @@ function waitForServer(url, timeout = 90000) {
 async function shoot(browser, width, height, file) {
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1 })
   const page = await ctx.newPage()
-  await page.goto(BASE, { waitUntil: 'networkidle', timeout: 90000 })
+  await page.goto(BASE + ROUTE, { waitUntil: 'networkidle', timeout: 90000 })
   // let fonts, reveals and any intro motion settle
   await page.waitForTimeout(3500)
   await page.evaluate(async () => {

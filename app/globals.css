@@ -243,3 +243,9 @@ html.ready .word__inner { animation: word-rise 1.1s var(--ease-expo) both; anima
 .site-footer__row { display: flex; justify-content: space-between; align-items: baseline; gap: 2rem; flex-wrap: wrap; margin-top: clamp(3rem, 7vw, 6rem); padding-top: 1.5rem; border-top: 1px solid var(--line); }
 .site-footer__meta { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cream-2); text-decoration: none; transition: color 0.3s; }
 a.site-footer__meta:hover { color: var(--brass); }
+
+/* ================================================================
+   /tour — 360° panorama walkthrough
+   ================================================================ */
+.tour__stage { position: fixed; inset: 0; z-index: 0; background: var(--forest-2); }
+.tour__stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
