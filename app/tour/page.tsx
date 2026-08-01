@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Cursor from '@/components/Cursor'
+import SmoothScroll from '@/components/SmoothScroll'
 import PanoramaTour from '@/components/tour/PanoramaTour'
 
 export const metadata: Metadata = {
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
 export default function TourPage() {
   return (
     <>
+      <SmoothScroll />
       <Cursor />
       <PanoramaTour />
     </>

@@ -249,3 +249,5 @@ a.site-footer__meta:hover { color: var(--brass); }
    ================================================================ */
 .tour__stage { position: fixed; inset: 0; z-index: 0; background: var(--forest-2); }
 .tour__stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.tour__spacer { position: relative; z-index: -1; pointer-events: none; }
+.tour__wipe { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
