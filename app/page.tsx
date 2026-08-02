@@ -5,6 +5,7 @@ import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Manifesto from '@/components/Manifesto'
 import Spaces from '@/components/Spaces'
+import TourInvite from '@/components/TourInvite'
 import Numbers from '@/components/Numbers'
 import Ritual from '@/components/Ritual'
 import Amenities from '@/components/Amenities'
@@ -23,6 +24,7 @@ export default function Home() {
         <Hero />
         <Manifesto />
         <Spaces />
+        <TourInvite />
         <Numbers />
         <Ritual />
         <Amenities />

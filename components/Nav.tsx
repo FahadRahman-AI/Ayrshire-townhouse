@@ -9,6 +9,7 @@ export default function Nav() {
       <a href="#top" className="nav__mark">{PROPERTY.name}</a>
       <nav className="nav__links">
         <a href="#spaces">Spaces</a>
+        <a href="/tour">Tour</a>
         <a href="#amenities">Amenities</a>
         <a href="#reviews">Reviews</a>
         <Magnetic strength={0.4}>

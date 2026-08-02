@@ -156,6 +156,16 @@ html.ready .word__inner { animation: word-rise 1.1s var(--ease-expo) both; anima
 .space-row:hover .space-row__desc { opacity: 1; }
 @media (max-width: 720px) { .space-row { grid-template-columns: 2.4rem 1fr; } .space-row__desc { display: none; } }
 
+/* ─── Tour invite (interstitial band → /tour) ────────────────── */
+.tour-invite { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.tour-invite__link { display: block; text-decoration: none; }
+.tour-invite__title { display: block; font-size: clamp(3rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.035em; color: var(--cream); }
+.tour-invite__title em { font-style: italic; color: var(--brass); }
+.tour-invite__arrow { display: inline-block; transition: transform 0.5s var(--ease-out); }
+.tour-invite__link:hover .tour-invite__arrow { transform: translateX(0.18em); }
+.tour-invite__sub { display: inline-block; margin-top: 1.6rem; font-size: 11px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cream-2); transition: color 0.4s; }
+.tour-invite__link:hover .tour-invite__sub { color: var(--brass-2); }
+
 /* ─── By the numbers ─────────────────────────────────────────── */
 .numbers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: clamp(2.5rem, 6vw, 4rem); }
 .stat { background: var(--forest); padding: clamp(1.6rem, 3vw, 2.6rem); display: flex; flex-direction: column; gap: 0.5rem; min-height: 170px; }

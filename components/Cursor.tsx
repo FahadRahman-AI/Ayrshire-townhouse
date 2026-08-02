@@ -27,6 +27,7 @@ export default function Cursor() {
       if (!t) { setState({ active: false, label: '' }); return }
       let label = ''
       if (t.matches('.space-row')) label = 'View'
+      else if (t.closest('.tour-invite__link')) label = 'Enter'
       else if (t.closest('.nav__cta, .reserve-card__cta, .btn--accent')) label = 'Enquire'
       setState({ active: true, label })
     }
