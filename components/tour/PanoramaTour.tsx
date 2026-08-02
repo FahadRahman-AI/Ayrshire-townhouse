@@ -302,7 +302,7 @@ export default function PanoramaTour() {
         </div>
 
         <p className={`tour__hint ${hintHidden ? 'tour__hint--done' : ''}`} aria-hidden={hintHidden}>
-          Click and drag to look around
+          Drag to look around
         </p>
 
         <nav className="tour__dots" aria-label="Rooms">
