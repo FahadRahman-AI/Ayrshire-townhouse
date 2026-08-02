@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -38,9 +38,32 @@ function disposeRoomScene(room: RoomScene) {
   room.texture.dispose()
 }
 
+/** Character-split headline — each char rises in with a stagger. */
+function SplitName({ text }: { text: string }) {
+  let i = 0
+  return (
+    <>
+      {text.split(' ').map((word, w) => (
+        <span className="tour__word" key={w}>
+          {word.split('').map((ch) => (
+            <span className="tour__char" key={`${w}-${ch}-${i}`} style={{ '--ci': i++ } as React.CSSProperties}>
+              {ch}
+            </span>
+          ))}{' '}
+        </span>
+      ))}
+    </>
+  )
+}
+
 export default function PanoramaTour() {
   const mountRef = useRef<HTMLDivElement>(null)
   const spacerRef = useRef<HTMLDivElement>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+  const [roomIndex, setRoomIndex] = useState(0)
+  const [hintDone, setHintDone] = useState(false)
+  const roomChangeRef = useRef(setRoomIndex)
+  const hintRef = useRef(setHintDone)
 
   useEffect(() => {
     const host = mountRef.current!
@@ -92,6 +115,7 @@ export default function PanoramaTour() {
       velPitch = 0
       host.classList.add('is-dragging')
       renderer.domElement.setPointerCapture(e.pointerId)
+      hintRef.current(true) // the hint has served its purpose
     }
     const onMove = (e: PointerEvent) => {
       if (!dragging) return
@@ -166,6 +190,7 @@ export default function PanoramaTour() {
       disposeRoomScene(outgoing)
       prewarm(nextIndex - 1)
       prewarm(nextIndex + 1)
+      roomChangeRef.current(nextIndex)
     }
 
     // ── Scroll → tour progress ───────────────────────────────────
@@ -196,16 +221,18 @@ export default function PanoramaTour() {
     let raf = 0
     const tick = () => {
       const p = Math.min(progress.p, ROOMS.length - 0.0001)
-      const roomIndex = Math.floor(p)
-      if (roomIndex !== activeIndex) switchRoom(roomIndex)
+      const roomIdx = Math.floor(p)
+      if (roomIdx !== activeIndex) switchRoom(roomIdx)
 
       // fov narrows through the room — a quiet sense of walking forward
-      const local = p - roomIndex
+      const local = p - roomIdx
       const fov = FOV_FAR - (FOV_FAR - FOV_NEAR) * local
       if (Math.abs(camera.fov - fov) > 0.01) {
         camera.fov = fov
         camera.updateProjectionMatrix()
       }
+
+      if (barRef.current) barRef.current.style.transform = `scaleX(${p / ROOMS.length})`
 
       const k = reduced ? 1 : DAMP
       yaw += (targetYaw - yaw) * k
@@ -236,9 +263,68 @@ export default function PanoramaTour() {
     }
   }, [])
 
+  const jumpTo = useCallback((i: number) => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight
+    const y = scrollable * ((i + 0.5) / ROOMS.length)
+    const lenis = (window as unknown as Record<string, unknown>).__lenis as
+      | { scrollTo: (y: number, o?: Record<string, unknown>) => void }
+      | undefined
+    if (lenis) lenis.scrollTo(y, { duration: 1.6 })
+    else window.scrollTo({ top: y, behavior: 'smooth' })
+  }, [])
+
+  const room = ROOMS[roomIndex]
+  const last = roomIndex === ROOMS.length - 1
+  const hintHidden = hintDone || roomIndex > 0
+
   return (
     <>
       <div ref={mountRef} className="tour__stage" aria-label="360° room view — drag to look around" />
+
+      <div className="tour__ui">
+        <div className="tour__scrim" aria-hidden />
+        <div className="tour__progress" aria-hidden>
+          <div ref={barRef} className="tour__progress-bar" />
+        </div>
+
+        <header className="tour__topbar">
+          <a className="tour__home" href="/">The Edgbaston Townhouse</a>
+          <span className="tour__counter">
+            {String(roomIndex + 1).padStart(2, '0')} / {String(ROOMS.length).padStart(2, '0')}
+          </span>
+        </header>
+
+        <div className="tour__chapter" key={room.slug}>
+          <p className="tour__eyebrow">{room.eyebrow}</p>
+          <h1 className="tour__name">
+            <SplitName text={room.name} />
+          </h1>
+        </div>
+
+        <p className={`tour__hint ${hintHidden ? 'tour__hint--done' : ''}`} aria-hidden={hintHidden}>
+          Click and drag to look around
+        </p>
+
+        <nav className="tour__dots" aria-label="Rooms">
+          {ROOMS.map((r, i) => (
+            <button
+              key={r.slug}
+              className={`tour__dot ${i === roomIndex ? 'tour__dot--active' : ''}`}
+              aria-label={`Go to ${r.name}`}
+              aria-current={i === roomIndex ? 'step' : undefined}
+              onClick={() => jumpTo(i)}
+            >
+              <span className="tour__dot-mark" />
+              <span className="tour__dot-label">{r.name.replace('The ', '')}</span>
+            </button>
+          ))}
+        </nav>
+
+        <a className={`tour__cta ${last ? 'tour__cta--visible' : ''}`} href="/#book" tabIndex={last ? 0 : -1}>
+          Enquire about this home
+        </a>
+      </div>
+
       <div ref={spacerRef} className="tour__spacer" style={{ height: `${(ROOMS.length + 1) * 100}vh` }} />
     </>
   )

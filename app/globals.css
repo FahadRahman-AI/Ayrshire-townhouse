@@ -251,3 +251,44 @@ a.site-footer__meta:hover { color: var(--brass); }
 .tour__stage canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 .tour__spacer { position: relative; z-index: -1; pointer-events: none; }
 .tour__wipe { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+
+/* ─── /tour UI layer ─────────────────────────────────────────── */
+.tour__ui { position: fixed; inset: 0; z-index: 3; pointer-events: none; }
+.tour__ui a, .tour__ui button { pointer-events: auto; }
+
+.tour__scrim { position: absolute; left: 0; right: 0; bottom: 0; height: 56vh; background: linear-gradient(to top, rgba(14, 26, 20, 0.62), rgba(14, 26, 20, 0.34) 45%, rgba(14, 26, 20, 0) 100%); }
+
+.tour__progress { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: rgba(20, 36, 28, 0.14); }
+.tour__progress-bar { height: 100%; background: var(--brass); transform-origin: left; transform: scaleX(0); }
+
+.tour__topbar { position: absolute; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: baseline; padding: 1.7rem var(--pad); }
+.tour__home { font-size: 11px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--forest); text-decoration: none; transition: color 0.3s; }
+.tour__home:hover { color: var(--brass); }
+.tour__counter { font-family: var(--font-fraunces), serif; font-style: italic; font-weight: 300; font-size: 1.05rem; color: var(--forest); }
+
+.tour__chapter { position: absolute; left: var(--pad); bottom: clamp(6.5rem, 13vh, 9rem); max-width: min(78vw, 900px); }
+.tour__eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: var(--cream); opacity: 0.85; margin-bottom: 1rem; }
+.tour__name { font-family: var(--font-fraunces), serif; font-weight: 300; font-style: italic; font-size: clamp(2.9rem, 7.5vw, 7rem); line-height: 0.95; letter-spacing: -0.03em; color: var(--cream); text-shadow: 0 2px 40px rgba(14, 26, 20, 0.35); }
+.tour__word { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.04em 0.18em 0.16em 0; margin-bottom: -0.16em; }
+.tour__char { display: inline-block; transform: translateY(112%); opacity: 0; animation: tour-char-rise 0.9s var(--ease-expo) forwards; animation-delay: calc(var(--ci) * 0.032s); }
+@keyframes tour-char-rise { to { transform: none; opacity: 1; } }
+
+.tour__hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--cream-2); transition: opacity 1s var(--ease-out); }
+.tour__hint--done { opacity: 0; }
+
+.tour__dots { position: absolute; left: var(--pad); bottom: 2.2rem; display: flex; align-items: center; gap: 1.15rem; }
+.tour__dot { display: flex; align-items: center; gap: 0.55rem; background: none; border: none; padding: 0.25rem 0; cursor: none; }
+.tour__dot-mark { width: 9px; height: 9px; border-radius: 50%; border: 1px solid var(--cream-2); background: transparent; transition: background 0.4s, border-color 0.4s; }
+.tour__dot--active .tour__dot-mark { background: var(--brass); border-color: var(--brass); animation: tour-dot-pulse 2.2s var(--ease-out) infinite; }
+@keyframes tour-dot-pulse { 0% { box-shadow: 0 0 0 0 rgba(200, 161, 92, 0.45); } 100% { box-shadow: 0 0 0 11px rgba(200, 161, 92, 0); } }
+.tour__dot-label { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cream-2); max-width: 0; overflow: hidden; opacity: 0; transform: translateX(-5px); transition: opacity 0.4s, transform 0.4s, max-width 0.5s var(--ease-out); white-space: nowrap; }
+.tour__dot--active .tour__dot-label, .tour__dot:hover .tour__dot-label { opacity: 0.9; transform: none; max-width: 180px; }
+
+.tour__cta { position: absolute; right: var(--pad); bottom: 2rem; display: inline-block; padding: 1.05rem 2.1rem; border-radius: 999px; background: var(--brass); color: var(--forest); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; opacity: 0; transform: translateY(16px); pointer-events: none !important; transition: opacity 0.8s var(--ease-expo), transform 0.8s var(--ease-expo), background 0.3s; }
+.tour__cta--visible { opacity: 1; transform: none; pointer-events: auto !important; }
+.tour__cta:hover { background: var(--brass-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tour__char { animation: none; transform: none; opacity: 1; }
+  .tour__dot--active .tour__dot-mark { animation: none; }
+}
