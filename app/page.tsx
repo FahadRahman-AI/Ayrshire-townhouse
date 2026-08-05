@@ -3,6 +3,9 @@ import SmoothScroll from '@/components/SmoothScroll'
 import Hero from '@/components/Hero'
 import Statement from '@/components/Statement'
 import Chapters from '@/components/Chapters'
+import Details from '@/components/Details'
+import Enquiry from '@/components/Enquiry'
+import SiteFooter from '@/components/SiteFooter'
 
 export default function Home() {
   return (
@@ -13,7 +16,9 @@ export default function Home() {
         <Hero />
         <Statement />
         <Chapters />
-        {/* Phase 6+ sections mount here — details, enquiry, footer */}
+        <Details />
+        <Enquiry />
+        <SiteFooter />
       </main>
     </>
   )

@@ -296,6 +296,100 @@ button { font-family: inherit; cursor: pointer; }
   transform: scale(1.35);
 }
 
+/* ─── Details grid ───────────────────────────────────────────── */
+.details {
+  background: var(--bg);
+  padding: clamp(6rem, 16vh, 11rem) var(--pad);
+}
+
+.details__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--accent);
+}
+
+.fact {
+  padding: clamp(2rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 3rem);
+  border-bottom: 1px solid var(--accent);
+}
+.fact:nth-child(odd) { border-right: 1px solid var(--accent); padding-left: 0; }
+
+.fact__value {
+  font-size: clamp(48px, 4.5vw, 64px);
+  font-variant-numeric: tabular-nums;
+}
+
+.fact__label {
+  margin-top: 0.9rem;
+  color: var(--ink-60);
+}
+
+@media (max-width: 720px) {
+  .details__grid { grid-template-columns: 1fr; }
+  .fact:nth-child(odd) { border-right: 0; }
+  .fact { padding-left: 0; }
+}
+
+/* ─── Enquiry ────────────────────────────────────────────────── */
+.enquiry {
+  background: var(--bg);
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: clamp(2.5rem, 6vh, 4.5rem);
+  padding: 10vh var(--pad);
+}
+
+.enquiry__text {
+  font-size: clamp(44px, 7vw, 110px);
+}
+
+.btn-pill {
+  position: relative;
+  display: inline-block;
+  padding: 1.15rem 2.6rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--bg);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.btn-pill__text {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* slanted deeper-accent layer sweeps in on hover */
+.btn-pill__fill {
+  position: absolute;
+  inset: -2px;
+  background: #755837;
+  transform: translateX(-112%) skewX(-12deg);
+  transition: transform 0.55s var(--ease-in-out);
+}
+.btn-pill:hover .btn-pill__fill { transform: translateX(0) skewX(0deg); }
+
+/* ─── Footer ─────────────────────────────────────────────────── */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 1.6rem var(--pad) 2rem;
+  border-top: 1px solid var(--ink-10);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.footer__item--muted { color: var(--ink-60); }
+
 /* ─── Preloader ──────────────────────────────────────────────── */
 html.is-loading body { overflow: hidden; }
 

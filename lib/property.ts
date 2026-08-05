@@ -35,6 +35,8 @@ export interface Property {
   checkOut: string
   host: { name: string; since: number }
   contactEmail: string
+  /** Enquiry CTA target — TODO: replace with the real booking/enquiry form URL */
+  enquiryUrl: string
   amenities: Amenity[]
   reviews: Review[]
 }
@@ -56,6 +58,7 @@ export const PROPERTY: Property = {
   checkOut: '11:00 AM',
   host: { name: 'Fahad', since: 2019 },
   contactEmail: 'fahadrahman9819@gmail.com',
+  enquiryUrl: '#', // TODO: real enquiry form link (user to supply)
   amenities: [
     { label: 'Cedar barrel sauna', icon: 'M3 12h18M5 12V7a7 7 0 0114 0v5M8 12v8m8-8v8M6 20h12' },
     { label: 'Cold plunge barrel', icon: 'M4 11h16l-1.5 8.5a2 2 0 01-2 1.5H7.5a2 2 0 01-2-1.5L4 11zm2-4c1.5 1 2.5-1 4 0s2.5-1 4 0 2.5-1 4 0' },
