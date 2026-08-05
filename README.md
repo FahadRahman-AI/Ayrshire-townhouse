@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Edgbaston Townhouse — property tour
 
-## Getting Started
+A photography-first editorial site for a restored Victorian stay in Edgbaston,
+Birmingham. Warm ivory canvas, colossal Fraunces display type, film grain, and
+scroll-driven room chapters — the photographs are the heroes; type, colour and
+motion serve them.
 
-First, run the development server:
+**Stack (exact):** Next.js 14 (App Router) · GSAP + ScrollTrigger · Lenis · CSS.
+No Three.js. Fraunces (display) / Inter (body) via `next/font`.
+
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev        # http://localhost:3000
+npm run build      # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Verify visually — mandatory before calling anything done
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+node screenshot.js             # full-page shot → screenshots/latest.png (1440w)
+node screenshot.js --mobile    # + 390w mobile shot
+node screenshot.js --path=/x   # capture a specific route
+node screenshot.js --delay=800 # viewport shot N ms after load (intro motion)
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+View the screenshot and grade it against `.claude/skills/awwwards-standard/SKILL.md`
+before claiming a visual task complete. Commit every verified win.
 
-## Learn More
+## Build state (Aug 2026)
 
-To learn more about Next.js, take a look at the following resources:
+Rebuilding to the 8-phase photography-first spec. Phases 1–2 (foundation,
+preloader) are verified and committed. Phases 3–8 (hero, editorial, room
+chapters, details/enquiry, cursor, mobile) are **blocked on real photography
+landing in `/public`** — the current assets there are AI-generated placeholders
+and must not be built with (see `lib/property.ts` for listing data).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Palette tokens in `app/globals.css` are provisional (sampled via sharp);
+re-sample from the real photos when they arrive.
