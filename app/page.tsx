@@ -1,5 +1,6 @@
 import Preloader from '@/components/Preloader'
 import SmoothScroll from '@/components/SmoothScroll'
+import Hero from '@/components/Hero'
 
 export default function Home() {
   return (
@@ -7,8 +8,9 @@ export default function Home() {
       <Preloader />
       <SmoothScroll />
       <main>
-        {/* Phase 3+ sections mount here — hero, editorial, room chapters */}
-        <section style={{ minHeight: '180vh' }} aria-hidden />
+        <Hero />
+        {/* Phase 4+ sections mount here — editorial, room chapters, details */}
+        <section style={{ minHeight: '100vh' }} aria-hidden />
       </main>
     </>
   )
