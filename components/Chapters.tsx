@@ -37,6 +37,24 @@ export const ROOMS: Room[] = [
     alt: 'Sage-green chef’s kitchen with brass pendants and a long prep counter',
     desc: 'Sage cabinetry, brass light and counter enough to cook properly.',
   },
+  {
+    id: 'master',
+    index: '03',
+    label: 'The Master',
+    name: 'The Master Suite',
+    img: '/photos/master-bedroom.jpg',
+    alt: 'Dormer-ceilinged master bedroom, quilted throw and a window full of trees',
+    desc: 'Dormer ceilings, deep carpet and a window full of trees at first light.',
+  },
+  {
+    id: 'snug',
+    index: '04',
+    label: 'The Snug',
+    name: 'The Snug',
+    img: '/photos/snug-bedroom.jpg',
+    alt: 'Small single bedroom under the eaves with a skylight over white linen',
+    desc: 'A single under the eaves — small, quiet and warm beneath the skylight.',
+  },
 ]
 
 // Scroll geometry: each chapter dwells for DWELL viewport-heights of scroll;
