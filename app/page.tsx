@@ -1,36 +1,12 @@
-import Preloader from '@/components/Preloader'
 import SmoothScroll from '@/components/SmoothScroll'
-import Cursor from '@/components/Cursor'
-import Nav from '@/components/Nav'
-import Hero from '@/components/Hero'
-import Manifesto from '@/components/Manifesto'
-import Spaces from '@/components/Spaces'
-import TourInvite from '@/components/TourInvite'
-import Numbers from '@/components/Numbers'
-import Ritual from '@/components/Ritual'
-import Amenities from '@/components/Amenities'
-import Reviews from '@/components/Reviews'
-import BookingSection from '@/components/BookingSection'
-import SiteFooter from '@/components/SiteFooter'
 
 export default function Home() {
   return (
     <>
-      <Preloader />
       <SmoothScroll />
-      <Cursor />
-      <Nav />
       <main>
-        <Hero />
-        <Manifesto />
-        <Spaces />
-        <TourInvite />
-        <Numbers />
-        <Ritual />
-        <Amenities />
-        <Reviews />
-        <BookingSection />
-        <SiteFooter />
+        {/* Phase 3+ sections mount here — hero, editorial, room chapters */}
+        <section style={{ minHeight: '180vh' }} aria-hidden />
       </main>
     </>
   )

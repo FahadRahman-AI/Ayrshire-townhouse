@@ -3,7 +3,8 @@ import { Fraunces, Inter } from 'next/font/google'
 import './globals.css'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://property-tour.vercel.app'
-const HERO_IMAGE = '/images/20ca4f38-0bd3-4f0f-ad2c-a4217727d3af.jpg'
+// TODO: point at the real lead photograph once the photography lands in /public
+const HERO_IMAGE = '/og.jpg'
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -63,14 +64,17 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#1c1917',
-  colorScheme: 'dark',
+  themeColor: '#f1efeb',
+  colorScheme: 'light',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${fraunces.variable} ${inter.variable}`}>{children}</body>
+      <body className={`${fraunces.variable} ${inter.variable}`}>
+        {children}
+        <div className="grain" aria-hidden />
+      </body>
     </html>
   )
 }
