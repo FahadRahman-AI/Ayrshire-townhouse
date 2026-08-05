@@ -1,5 +1,6 @@
 import Preloader from '@/components/Preloader'
 import SmoothScroll from '@/components/SmoothScroll'
+import Cursor from '@/components/Cursor'
 import Hero from '@/components/Hero'
 import Statement from '@/components/Statement'
 import Chapters from '@/components/Chapters'
@@ -12,6 +13,7 @@ export default function Home() {
     <>
       <Preloader />
       <SmoothScroll />
+      <Cursor />
       <main>
         <Hero />
         <Statement />

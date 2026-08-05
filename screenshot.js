@@ -9,6 +9,8 @@
 //                                       motion mid-flight; skips settle + scroll)
 //   node screenshot.js --scroll=2400  → settle, scroll to Y px, viewport shot
 //                                       (verify pinned/scrubbed states)
+//   node screenshot.js --mouse=x,y    → move mouse there before the shot
+//                                       (verify hover states; combines with --scroll)
 
 const { chromium } = require('playwright')
 const { spawn } = require('child_process')
@@ -23,6 +25,9 @@ const OUT = path.join(__dirname, 'screenshots')
 const MOBILE = process.argv.includes('--mobile')
 const DELAY = Number((process.argv.find((a) => a.startsWith('--delay=')) || '').slice(8)) || 0
 const SCROLL = Number((process.argv.find((a) => a.startsWith('--scroll=')) || '').slice(9)) || 0
+const MOUSE = ((process.argv.find((a) => a.startsWith('--mouse=')) || '').slice(8) || '')
+  .split(',')
+  .map(Number)
 
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true })
 
@@ -61,9 +66,21 @@ async function shoot(browser, width, height, file) {
       window.scrollTo(0, y)
     }, SCROLL)
     await page.waitForTimeout(1000)
+    if (MOUSE.length === 2 && !Number.isNaN(MOUSE[0])) {
+      await page.mouse.move(MOUSE[0], MOUSE[1], { steps: 10 })
+      await page.waitForTimeout(900)
+    }
     await page.screenshot({ path: path.join(OUT, file) })
     await ctx.close()
     console.log(`  ✓ ${file} (scrollY=${SCROLL})`)
+    return
+  }
+  if (MOUSE.length === 2 && !Number.isNaN(MOUSE[0])) {
+    await page.mouse.move(MOUSE[0], MOUSE[1], { steps: 10 })
+    await page.waitForTimeout(900)
+    await page.screenshot({ path: path.join(OUT, file) })
+    await ctx.close()
+    console.log(`  ✓ ${file} (mouse ${MOUSE[0]},${MOUSE[1]})`)
     return
   }
   await page.evaluate(async () => {

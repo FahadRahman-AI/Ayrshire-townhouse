@@ -204,6 +204,7 @@ export default function Chapters() {
               type="button"
               className={`chapters__dot ${i === active ? 'is-active' : ''}`}
               aria-label={room.name}
+              data-label={room.name}
               onClick={() => goTo(i)}
             />
           ))}
