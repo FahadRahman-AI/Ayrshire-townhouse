@@ -79,3 +79,35 @@ button { font-family: inherit; cursor: pointer; }
 /* ─── Masked-line reveal primitive (used by preloader, hero, chapters) ─ */
 .mask { display: block; overflow: hidden; }
 .mask > .mask__inner { display: block; will-change: transform; }
+
+/* ─── Preloader ──────────────────────────────────────────────── */
+html.is-loading body { overflow: hidden; }
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  background: var(--bg);
+  display: grid;
+  place-items: center;
+  clip-path: inset(0 0 0% 0);
+  will-change: clip-path;
+}
+
+.preloader__name {
+  font-size: clamp(2.2rem, 4.8vw, 4.4rem);
+  text-align: center;
+  padding: 0 var(--pad);
+}
+
+.preloader__counter {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) * 0.75);
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-60);
+}

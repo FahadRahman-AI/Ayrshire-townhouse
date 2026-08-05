@@ -5,6 +5,8 @@
 //   node screenshot.js                → screenshots/latest.png   (full page, 1440w)
 //   node screenshot.js --mobile       → also screenshots/latest-mobile.png (390w)
 //   node screenshot.js --path=/tour   → capture a specific route instead of /
+//   node screenshot.js --delay=800    → viewport shot N ms after load (catch intro
+//                                       motion mid-flight; skips settle + scroll)
 
 const { chromium } = require('playwright')
 const { spawn } = require('child_process')
@@ -17,6 +19,7 @@ const ROUTE = (process.argv.find((a) => a.startsWith('--path=')) || '--path=/').
 const BASE = `http://localhost:${PORT}`
 const OUT = path.join(__dirname, 'screenshots')
 const MOBILE = process.argv.includes('--mobile')
+const DELAY = Number((process.argv.find((a) => a.startsWith('--delay=')) || '').slice(8)) || 0
 
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true })
 
@@ -36,6 +39,15 @@ function waitForServer(url, timeout = 90000) {
 async function shoot(browser, width, height, file) {
   const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1 })
   const page = await ctx.newPage()
+  if (DELAY) {
+    // mid-flight capture: shoot the viewport N ms after commit, no settling
+    await page.goto(BASE + ROUTE, { waitUntil: 'commit', timeout: 90000 })
+    await page.waitForTimeout(DELAY)
+    await page.screenshot({ path: path.join(OUT, file) })
+    await ctx.close()
+    console.log(`  ✓ ${file} (t+${DELAY}ms)`)
+    return
+  }
   await page.goto(BASE + ROUTE, { waitUntil: 'networkidle', timeout: 90000 })
   // let fonts, reveals and any intro motion settle
   await page.waitForTimeout(3500)
