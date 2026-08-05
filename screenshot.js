@@ -103,8 +103,13 @@ async function shoot(browser, width, height, file) {
     await waitForServer(BASE)
     console.log('▶ server ready — capturing …')
     const browser = await chromium.launch()
-    await shoot(browser, 1440, 900, 'latest.png')
-    if (MOBILE) await shoot(browser, 390, 844, 'latest-mobile.png')
+    if (MOBILE && (SCROLL || DELAY)) {
+      // state checks at mobile width only
+      await shoot(browser, 390, 844, 'latest-mobile.png')
+    } else {
+      await shoot(browser, 1440, 900, 'latest.png')
+      if (MOBILE) await shoot(browser, 390, 844, 'latest-mobile.png')
+    }
     await browser.close()
     console.log('✓ done → screenshots/latest.png')
   } catch (e) {

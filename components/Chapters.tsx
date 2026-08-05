@@ -59,8 +59,9 @@ export const ROOMS: Room[] = [
 
 // Scroll geometry: each chapter dwells for DWELL viewport-heights of scroll;
 // the incoming wipe rides the final WIPE fraction of the outgoing dwell.
-const DWELL = 1.6 // 100vh pinned + 60vh scrub
-const WIPE = 0.32 // final 20% of the dwell
+// Mobile gets a shorter pin (100vh + 30vh) so the tour doesn't drag on touch.
+const dwellFor = () => (window.matchMedia('(max-width: 720px)').matches ? 1.3 : 1.6)
+const wipeFor = (dwell: number) => dwell * 0.2 // final 20% of the dwell
 
 export default function Chapters() {
   const ref = useRef<HTMLElement>(null)
@@ -72,10 +73,54 @@ export default function Chapters() {
     if (!el) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const layers = gsap.utils.toArray<HTMLElement>('.chapter', el)
+    const DWELL = dwellFor()
+    const WIPE = wipeFor(DWELL)
     const total = ROOMS.length * DWELL
 
     const ctx = gsap.context(() => {
       if (reduced) return
+
+      // start every chapter's UI hidden; reveals are driven by the master trigger
+      layers.forEach((layer) => {
+        gsap.set(layer.querySelectorAll('.chapter__meta, .chapter__desc'), { opacity: 0 })
+        gsap.set(layer.querySelectorAll('.char'), { yPercent: 110 })
+      })
+
+      // per-chapter UI reveal timelines — driven by the master trigger below
+      const uiTls = layers.map((layer) =>
+        gsap
+          .timeline({ paused: true })
+          .fromTo(
+            layer.querySelectorAll('.chapter__meta'),
+            { opacity: 0, y: 12 },
+            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+            0,
+          )
+          .fromTo(
+            layer.querySelectorAll('.char'),
+            { yPercent: 110 },
+            { yPercent: 0, duration: 1, ease: 'power3.out', stagger: 0.03 },
+            0.05,
+          )
+          .fromTo(
+            layer.querySelector('.chapter__desc'),
+            { opacity: 0 },
+            { opacity: 1, duration: 0.8, ease: 'power3.out' },
+            '-=0.55',
+          ),
+      )
+
+      // single source of truth for the active chapter: master progress
+      const syncActive = (progress: number) => {
+        const pos = progress * total
+        const idx = Math.min(layers.length - 1, Math.max(0, Math.floor((pos + WIPE / 2) / DWELL)))
+        if (idx === activeRef.current) return
+        const prev = activeRef.current
+        activeRef.current = idx
+        setActive(idx)
+        uiTls[idx].play()
+        if (idx < prev) for (let j = prev; j > idx; j--) uiTls[j].reverse()
+      }
 
       // ── master scrubbed timeline: wipes + Ken Burns + progress fill ──
       const tl = gsap.timeline({
@@ -87,6 +132,8 @@ export default function Chapters() {
           pin: '.chapters__stage',
           scrub: true,
           invalidateOnRefresh: true,
+          onUpdate: (self) => syncActive(self.progress),
+          onEnter: () => uiTls[0].play(),
         },
       })
 
@@ -113,47 +160,6 @@ export default function Chapters() {
       })
 
       tl.fromTo('.chapters__bar', { scaleY: 0 }, { scaleY: 1, duration: total }, 0)
-
-      // ── per-chapter UI reveals: play on entry, reverse on exit ──
-      layers.forEach((layer, i) => {
-        const chars = layer.querySelectorAll('.char')
-        const uiTl = gsap
-          .timeline({ paused: true })
-          .fromTo(
-            layer.querySelectorAll('.chapter__meta'),
-            { opacity: 0, y: 12 },
-            { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-            0,
-          )
-          .fromTo(
-            chars,
-            { yPercent: 110 },
-            { yPercent: 0, duration: 1, ease: 'power3.out', stagger: 0.03 },
-            0.05,
-          )
-          .fromTo(
-            layer.querySelector('.chapter__desc'),
-            { opacity: 0 },
-            { opacity: 1, duration: 0.8, ease: 'power3.out' },
-            '-=0.55',
-          )
-
-        ScrollTrigger.create({
-          trigger: el,
-          start: () => `top+=${Math.max(0, (i * DWELL - WIPE / 2)) * window.innerHeight - window.innerHeight * 0.4} top`,
-          end: () => `top+=${((i + 1) * DWELL - WIPE / 2) * window.innerHeight} top`,
-          invalidateOnRefresh: true,
-          onToggle: (self) => {
-            if (self.isActive) {
-              uiTl.play()
-              activeRef.current = i
-              setActive(i)
-            } else if (self.direction < 0) {
-              uiTl.reverse()
-            }
-          },
-        })
-      })
     }, el)
 
     return () => ctx.revert()
@@ -163,6 +169,8 @@ export default function Chapters() {
     const el = ref.current
     if (!el) return
     const lenis = window.__lenis
+    const DWELL = dwellFor()
+    const WIPE = wipeFor(DWELL)
     const y = el.offsetTop + (i === 0 ? 0 : (i * DWELL - WIPE / 2) * window.innerHeight + 2)
     if (lenis) lenis.scrollTo(y, { duration: 1.2 })
     else window.scrollTo({ top: y, behavior: 'smooth' })
