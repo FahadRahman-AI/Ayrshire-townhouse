@@ -154,6 +154,46 @@ button { font-family: inherit; cursor: pointer; }
   .hero__cue-line { animation: none; }
 }
 
+/* ─── Editorial statement ────────────────────────────────────── */
+.statement {
+  background: var(--bg);
+  padding: 20vh var(--pad);
+}
+
+.statement__rule {
+  display: block;
+  width: min(320px, 30vw);
+  height: 1px;
+  background: var(--accent);
+  transform-origin: left;
+  margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.statement__text {
+  font-size: clamp(32px, 4.5vw, 64px);
+  letter-spacing: -0.02em;
+  line-height: 1.06;
+}
+
+.statement__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  max-width: 780px;
+  margin-left: auto;
+  margin-top: clamp(3.5rem, 10vh, 7rem);
+}
+
+.statement__col {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-60);
+}
+
+@media (max-width: 720px) {
+  .statement__cols { grid-template-columns: 1fr; }
+}
+
 /* ─── Preloader ──────────────────────────────────────────────── */
 html.is-loading body { overflow: hidden; }
 
