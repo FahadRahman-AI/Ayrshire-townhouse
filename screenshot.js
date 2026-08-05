@@ -7,6 +7,8 @@
 //   node screenshot.js --path=/tour   → capture a specific route instead of /
 //   node screenshot.js --delay=800    → viewport shot N ms after load (catch intro
 //                                       motion mid-flight; skips settle + scroll)
+//   node screenshot.js --scroll=2400  → settle, scroll to Y px, viewport shot
+//                                       (verify pinned/scrubbed states)
 
 const { chromium } = require('playwright')
 const { spawn } = require('child_process')
@@ -20,6 +22,7 @@ const BASE = `http://localhost:${PORT}`
 const OUT = path.join(__dirname, 'screenshots')
 const MOBILE = process.argv.includes('--mobile')
 const DELAY = Number((process.argv.find((a) => a.startsWith('--delay=')) || '').slice(8)) || 0
+const SCROLL = Number((process.argv.find((a) => a.startsWith('--scroll=')) || '').slice(9)) || 0
 
 if (!fs.existsSync(OUT)) fs.mkdirSync(OUT, { recursive: true })
 
@@ -51,6 +54,18 @@ async function shoot(browser, width, height, file) {
   await page.goto(BASE + ROUTE, { waitUntil: 'networkidle', timeout: 90000 })
   // let fonts, reveals and any intro motion settle
   await page.waitForTimeout(3500)
+  if (SCROLL) {
+    // step to the target so scrubbed timelines track, then hold and shoot
+    await page.evaluate(async (y) => {
+      for (let p = 0; p <= 1.001; p += 0.1) { window.scrollTo(0, y * p); await new Promise((r) => setTimeout(r, 60)) }
+      window.scrollTo(0, y)
+    }, SCROLL)
+    await page.waitForTimeout(1000)
+    await page.screenshot({ path: path.join(OUT, file) })
+    await ctx.close()
+    console.log(`  ✓ ${file} (scrollY=${SCROLL})`)
+    return
+  }
   await page.evaluate(async () => {
     // trigger scroll-reveals across the whole page, then return to top
     const h = document.body.scrollHeight

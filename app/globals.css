@@ -194,6 +194,108 @@ button { font-family: inherit; cursor: pointer; }
   .statement__cols { grid-template-columns: 1fr; }
 }
 
+/* ─── Room chapters ──────────────────────────────────────────── */
+.chapters { position: relative; }
+
+.chapters__stage {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.chapter {
+  position: absolute;
+  inset: 0;
+  will-change: clip-path;
+}
+
+.chapter__media {
+  position: absolute;
+  inset: -3%; /* bleed so Ken Burns drift never shows edges */
+  will-change: transform;
+}
+.chapter__media img { object-fit: cover; }
+
+.chapter__scrim {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 75%;
+  height: 55%;
+  background: radial-gradient(ellipse at 0% 100%, rgba(20, 16, 12, 0.15), transparent 72%);
+  pointer-events: none;
+}
+
+.chapter__ui {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) * 1.3);
+  color: var(--bg);
+  will-change: transform;
+}
+
+.chapter__meta { margin-bottom: 1.1rem; }
+
+.chapter__name {
+  font-size: clamp(48px, 7.5vw, 124px);
+  white-space: nowrap;
+}
+
+.chapter__desc {
+  margin-top: 1.2rem;
+  max-width: 44ch;
+  font-size: 14px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--bg) 82%, transparent);
+}
+
+.chapters__counter {
+  position: absolute;
+  top: calc(var(--pad) * 0.6);
+  right: var(--pad);
+  color: var(--bg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* right-edge total-progress track */
+.chapters__track {
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  right: calc(var(--pad) * 0.5);
+  width: 1px;
+  background: rgba(241, 239, 235, 0.18);
+}
+.chapters__bar {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+/* bottom-left room-dot navigator */
+.chapters__dots {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) * 0.45);
+  display: flex;
+  gap: 12px;
+}
+.chapters__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(241, 239, 235, 0.4);
+  transition: background 0.3s, transform 0.3s;
+}
+.chapters__dot.is-active {
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
 /* ─── Preloader ──────────────────────────────────────────────── */
 html.is-loading body { overflow: hidden; }
 

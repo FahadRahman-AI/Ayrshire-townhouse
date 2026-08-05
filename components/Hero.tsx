@@ -4,20 +4,9 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { PROPERTY } from '@/lib/property'
+import Chars from './Chars'
 
 const LINES = ['The Edgbaston', 'Townhouse']
-
-function Chars({ text }: { text: string }) {
-  return (
-    <>
-      {text.split('').map((c, i) => (
-        <span className="mask mask--char" key={i} aria-hidden>
-          <span className="mask__inner char">{c === ' ' ? ' ' : c}</span>
-        </span>
-      ))}
-    </>
-  )
-}
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)

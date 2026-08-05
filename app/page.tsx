@@ -2,6 +2,7 @@ import Preloader from '@/components/Preloader'
 import SmoothScroll from '@/components/SmoothScroll'
 import Hero from '@/components/Hero'
 import Statement from '@/components/Statement'
+import Chapters from '@/components/Chapters'
 
 export default function Home() {
   return (
@@ -11,7 +12,8 @@ export default function Home() {
       <main>
         <Hero />
         <Statement />
-        {/* Phase 5+ sections mount here — room chapters, details, enquiry */}
+        <Chapters />
+        {/* Phase 6+ sections mount here — details, enquiry, footer */}
       </main>
     </>
   )
