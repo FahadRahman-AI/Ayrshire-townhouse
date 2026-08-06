@@ -3,7 +3,7 @@ import SmoothScroll from '@/components/SmoothScroll'
 import Cursor from '@/components/Cursor'
 import Hero from '@/components/Hero'
 import Statement from '@/components/Statement'
-import Chapters from '@/components/Chapters'
+import FilmScroll from '@/components/FilmScroll'
 import Details from '@/components/Details'
 import Enquiry from '@/components/Enquiry'
 import SiteFooter from '@/components/SiteFooter'
@@ -17,7 +17,7 @@ export default function Home() {
       <main>
         <Hero />
         <Statement />
-        <Chapters />
+        <FilmScroll />
         <Details />
         <Enquiry />
         <SiteFooter />

@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from 'next'
-import { Fraunces, Inter } from 'next/font/google'
+import { Space_Grotesk, Inter } from 'next/font/google'
 import './globals.css'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://property-tour.vercel.app'
 // TODO: point at the real lead photograph once the photography lands in /public
 const HERO_IMAGE = '/og.jpg'
 
-const fraunces = Fraunces({
+// Display face — a modern, minimal grotesque. Replaces the former Fraunces serif.
+const display = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-fraunces',
-  weight: ['300', '400', '700'],
-  style: ['normal', 'italic'],
+  variable: '--font-display',
+  weight: ['300', '400', '500'],
   display: 'swap',
 })
 
@@ -71,7 +71,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${fraunces.variable} ${inter.variable}`}>
+      <body className={`${display.variable} ${inter.variable}`}>
         {children}
         <div className="grain" aria-hidden />
       </body>

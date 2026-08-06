@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
-import Image from 'next/image'
 import gsap from 'gsap'
 import { PROPERTY } from '@/lib/property'
 import Chars from './Chars'
@@ -44,13 +43,16 @@ export default function Hero() {
   return (
     <section className="hero" ref={ref}>
       <div className="hero__media">
-        <Image
-          src="/photos/hero-sauna.jpg"
-          alt="The garden at dusk — cedar sauna and cold-plunge barrels under warm fence light"
-          fill
-          priority
-          quality={100}
-          sizes="100vw"
+        <video
+          className="hero__video"
+          poster="/Videos/posters/film-2.jpg"
+          src="/Videos/film-2.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-label="The garden at dusk — cedar sauna and cold-plunge barrels under warm fence light"
         />
       </div>
 

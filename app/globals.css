@@ -57,10 +57,10 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 .display {
-  font-family: var(--font-fraunces), serif;
+  font-family: var(--font-display), 'Helvetica Neue', Arial, sans-serif;
   font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  line-height: 0.94;
+  letter-spacing: -0.02em;
 }
 
 /* ─── Film grain — one fixed layer over everything below the UI ─ */
@@ -145,6 +145,13 @@ html.has-cursor, html.has-cursor * { cursor: none; }
   will-change: transform;
 }
 .hero__media img { object-fit: cover; }
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* ≤15% scrim, strictly behind the text areas */
 .hero__scrim {
@@ -169,7 +176,7 @@ html.has-cursor, html.has-cursor * { cursor: none; }
   position: absolute;
   left: var(--pad);
   bottom: calc(var(--pad) * 1.6); /* clear of the bottom-center scroll cue */
-  font-size: clamp(56px, 9vw, 150px);
+  font-size: clamp(42px, 8.6vw, 140px);
   color: var(--bg);
 }
 .hero__line { display: block; white-space: nowrap; }
@@ -389,6 +396,151 @@ html.has-cursor, html.has-cursor * { cursor: none; }
   .chapter__name { white-space: normal; }
   .chapter__ui { right: var(--pad); bottom: calc(var(--pad) * 1.3 + 20px); }
   .hero__title { bottom: calc(var(--pad) * 1.6 + 72px); }
+}
+
+/* ─── Film tour (Three.js scroll-scrubbed video) ─────────────── */
+.film { position: relative; background: var(--ink); }
+
+.film__stage {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.film__canvas { position: absolute; inset: 0; }
+.film__canvas .film__gl,
+.film__canvas canvas { display: block; width: 100% !important; height: 100% !important; }
+
+.film__scrim {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 82%;
+  height: 62%;
+  background: radial-gradient(ellipse at 0% 100%, rgba(12, 10, 8, 0.5), transparent 70%);
+  pointer-events: none;
+}
+
+.film__ui {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) * 1.3);
+  color: var(--bg);
+}
+
+/* captions stack in place; only the active one is shown */
+.film__cap {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: min(46ch, 82vw);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease-out), transform 0.7s var(--ease-out);
+  pointer-events: none;
+}
+.film__cap.is-active { opacity: 1; transform: translateY(0); }
+
+.film__meta { margin-bottom: 1.1rem; }
+
+.film__name {
+  font-size: clamp(46px, 7vw, 118px);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.film__desc {
+  margin-top: 1.2rem;
+  max-width: 42ch;
+  font-size: 14px;
+  line-height: 1.65;
+  color: color-mix(in srgb, var(--bg) 80%, transparent);
+}
+
+.film__counter {
+  position: absolute;
+  top: calc(var(--pad) * 0.6);
+  right: var(--pad);
+  color: var(--bg);
+  font-variant-numeric: tabular-nums;
+}
+
+.film__track {
+  position: absolute;
+  top: 20%;
+  bottom: 20%;
+  right: calc(var(--pad) * 0.5);
+  width: 1px;
+  background: rgba(241, 239, 235, 0.2);
+}
+.film__bar {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+.film__dots {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) * 0.45);
+  display: flex;
+  gap: 12px;
+}
+.film__dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  background: rgba(241, 239, 235, 0.4);
+  transition: background 0.3s, transform 0.3s;
+}
+.film__dot.is-active { background: var(--accent); transform: scale(1.35); }
+.film__dot::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  white-space: nowrap;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bg);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.film__dot:hover::after { opacity: 1; }
+
+/* reduced-motion fallback: poster stills stacked */
+.film--static .film__still {
+  position: relative;
+  height: 92vh;
+  overflow: hidden;
+}
+.film--static .film__still img { object-fit: cover; }
+.film--static .film__cap {
+  position: absolute;
+  left: var(--pad);
+  bottom: calc(var(--pad) * 1.3);
+}
+
+@media (max-width: 720px) {
+  .film__dots { left: 0; right: 0; bottom: 0; gap: 3px; padding: 0 3px 3px; }
+  .film__dot { flex: 1; height: 3px; border-radius: 2px; transform: none; }
+  .film__dot.is-active { transform: none; }
+  .film__dot::after { display: none; }
+  .film__name { white-space: normal; }
+  .film__ui { right: var(--pad); bottom: calc(var(--pad) * 1.3 + 20px); }
 }
 
 /* ─── Details grid ───────────────────────────────────────────── */
