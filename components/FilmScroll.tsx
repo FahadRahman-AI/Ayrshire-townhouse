@@ -80,6 +80,13 @@ export default function FilmScroll() {
     }
 
     const N = FILMS.length
+    const FPS = 24
+
+    // render-on-demand bookkeeping (idle = no GPU work)
+    let visible = false
+    let drawPending = 3
+    let lastScrollT = performance.now()
+    const frameReady = FILMS.map(() => true)
 
     // ── videos (we own the timeline; kept muted + paused, scrubbed by scroll) ──
     const videos = FILMS.map((f) => {
@@ -118,11 +125,32 @@ export default function FilmScroll() {
         },
         { once: true },
       )
+      // only re-upload a texture when a genuinely new frame is presented
+      const rvfc = (v as unknown as { requestVideoFrameCallback?: (cb: () => void) => void })
+        .requestVideoFrameCallback
+      if (typeof rvfc === 'function') {
+        const tick = () => {
+          frameReady[i] = true
+          drawPending = Math.max(drawPending, 2)
+          rvfc.call(v, tick)
+        }
+        rvfc.call(v, tick)
+      } else {
+        const mark = () => {
+          frameReady[i] = true
+          drawPending = Math.max(drawPending, 2)
+        }
+        v.addEventListener('seeked', mark)
+      }
     })
 
     // ── renderer + fullscreen shader quad ──
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75))
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      alpha: false,
+      powerPreference: 'high-performance',
+    })
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25))
     renderer.setSize(mount.clientWidth, mount.clientHeight)
     renderer.domElement.className = 'film__gl'
     mount.appendChild(renderer.domElement)
@@ -145,7 +173,6 @@ export default function FilmScroll() {
 
     // ── scroll wiring ──
     const progress = { current: 0 }
-    let visible = false
 
     const syncActive = (p: number) => {
       const idx = Math.min(N - 1, Math.floor(p * N + 1e-4))
@@ -165,18 +192,25 @@ export default function FilmScroll() {
       invalidateOnRefresh: true,
       onUpdate: (self) => {
         progress.current = self.progress
+        lastScrollT = performance.now()
         syncActive(self.progress)
       },
       onToggle: (self) => {
         visible = self.isActive
+        if (visible) {
+          drawPending = 3
+          lastScrollT = performance.now()
+        }
       },
     })
 
     const durOf = (v: HTMLVideoElement) => (v.duration && !Number.isNaN(v.duration) ? v.duration : 5)
     const seek = (v: HTMLVideoElement, t: number) => {
       if (!v.duration || Number.isNaN(v.duration)) return
-      const target = Math.min(v.duration - 0.05, Math.max(0, t))
-      if (v.readyState >= 2 && !v.seeking && Math.abs(v.currentTime - target) > 0.02) {
+      // snap to the frame grid so we don't fire redundant sub-frame seeks
+      const snapped = Math.round(t * FPS) / FPS
+      const target = Math.min(v.duration - 0.05, Math.max(0, snapped))
+      if (v.readyState >= 2 && !v.seeking && Math.abs(v.currentTime - target) >= 0.5 / FPS) {
         v.currentTime = target
       }
     }
@@ -186,6 +220,11 @@ export default function FilmScroll() {
     const render = () => {
       raf = requestAnimationFrame(render)
       if (!visible) return // perf gate — never render the stage while it's off-screen
+
+      // idle gate: only work while scrolling or when a fresh frame is pending
+      const scrolling = performance.now() - lastScrollT < 500
+      if (!scrolling && drawPending <= 0) return
+      if (drawPending > 0) drawPending--
 
       const p = progress.current
       const g = Math.min(N - 1e-4, Math.max(0, p * N))
@@ -206,8 +245,15 @@ export default function FilmScroll() {
       uniforms.uMix.value = mix
       uniforms.uTime.value = clock.getElapsedTime()
 
-      textures[idx].needsUpdate = true
-      if (next !== idx) textures[next].needsUpdate = true
+      // upload only the textures that actually have a new decoded frame
+      if (frameReady[idx]) {
+        textures[idx].needsUpdate = true
+        frameReady[idx] = false
+      }
+      if (next !== idx && frameReady[next]) {
+        textures[next].needsUpdate = true
+        frameReady[next] = false
+      }
       renderer.render(scene, camera)
     }
     raf = requestAnimationFrame(render)
@@ -215,6 +261,7 @@ export default function FilmScroll() {
     const onResize = () => {
       renderer.setSize(mount.clientWidth, mount.clientHeight)
       uniforms.uScreen.value = mount.clientWidth / mount.clientHeight
+      drawPending = 2
     }
     window.addEventListener('resize', onResize)
 
