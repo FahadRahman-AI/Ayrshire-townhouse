@@ -17,8 +17,8 @@ interface Fact {
 const FACTS: Fact[] = [
   { value: PROPERTY.capacity.guests, pad: 2, label: 'Sleeps' },
   { value: PROPERTY.capacity.bedrooms, pad: 2, label: 'Bedrooms' },
-  { text: 'B15', label: 'Edgbaston · Birmingham' },
-  { value: 1898, pad: 4, label: 'Established' },
+  { text: 'KA', label: 'North Ayrshire' },
+  { value: PROPERTY.capacity.baths, pad: 2, label: 'Bathrooms' },
 ]
 
 export default function Details() {

@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Single source of truth for the listing.
-// ⚠️ PLACEHOLDER DATA — realistic Birmingham Airbnb figures. Swap for the real
-//    listing (rate, capacity, reviews, host) before going live.
+// Location is real: North Ayrshire, Scotland (entire home). Rate, capacity,
+// rating, reviews and host figures are still PLACEHOLDER — confirm vs the listing.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export interface Amenity {
@@ -42,9 +42,9 @@ export interface Property {
 }
 
 export const PROPERTY: Property = {
-  name: 'The Edgbaston Townhouse',
-  tagline: 'A restored Victorian retreat with a cedar garden sauna & cold plunge.',
-  location: 'Edgbaston, Birmingham, UK',
+  name: 'The Ayrshire Townhouse',
+  tagline: 'A restored townhouse in North Ayrshire — a cedar garden sauna & cold plunge.',
+  location: 'North Ayrshire, Scotland',
   rating: 4.97,
   reviewCount: 128,
   superhost: true,
@@ -72,6 +72,6 @@ export const PROPERTY: Property = {
   reviews: [
     { name: 'Amelia', location: 'London', date: 'June 2026', rating: 5, quote: 'The sauna and cold plunge at dusk made the whole trip. Photos do not do the light justice.' },
     { name: 'Marcus', location: 'Manchester', date: 'May 2026', rating: 5, quote: 'Spotless, characterful, and the kitchen is a genuine chef’s kitchen. We cooked every night.' },
-    { name: 'Priya', location: 'Edinburgh', date: 'April 2026', rating: 5, quote: 'Fahad is a thoughtful host — the master suite at dawn is something else. Faultless stay.' },
+    { name: 'Priya', location: 'Edinburgh', date: 'April 2026', rating: 5, quote: 'Fahad is a thoughtful host — the main bedroom at dawn is something else. Faultless stay.' },
   ],
 }

@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const LINES = [
-  'An 1898 townhouse,',
+  'A townhouse in Ayrshire,',
   'restored to its bones —',
   'evenings end in cedar',
   'and cold water.',
@@ -53,8 +53,8 @@ export default function Statement() {
       </h2>
       <div className="statement__cols">
         <p className="statement__col">
-          Three bedrooms, a chef&rsquo;s kitchen and a dining room that keeps its Victorian
-          proportions — six guests, five minutes from the botanical gardens.
+          Warm bedrooms, a sage-green kitchen and living space that holds its period
+          proportions — room for the group, a base for Ayrshire and the Clyde coast.
         </p>
         <p className="statement__col">
           In the garden: a cedar barrel sauna, a cold plunge and low fence-light. The ritual is

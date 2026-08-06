@@ -5,7 +5,7 @@ import gsap from 'gsap'
 import { PROPERTY } from '@/lib/property'
 import Chars from './Chars'
 
-const LINES = ['The Edgbaston', 'Townhouse']
+const LINES = ['The Ayrshire', 'Townhouse']
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null)
@@ -58,8 +58,8 @@ export default function Hero() {
 
       <div className="hero__scrim" aria-hidden />
 
-      <p className="label hero__corner hero__corner--left hero__fade">Edgbaston · Birmingham</p>
-      <p className="label hero__corner hero__corner--right hero__fade">Est · 1898</p>
+      <p className="label hero__corner hero__corner--left hero__fade">North Ayrshire · Scotland</p>
+      <p className="label hero__corner hero__corner--right hero__fade">Entire home</p>
 
       <h1 className="hero__title display" aria-label={PROPERTY.name}>
         {LINES.map((line) => (

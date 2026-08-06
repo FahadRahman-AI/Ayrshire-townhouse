@@ -22,40 +22,40 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'The Edgbaston Townhouse — Birmingham Airbnb',
+  title: 'The Ayrshire Townhouse — North Ayrshire Airbnb',
   description:
-    'Book a restored Victorian townhouse in Edgbaston, Birmingham — 3 bedrooms, chef’s kitchen, cedar garden sauna and cold plunge. Superhost · 4.97★.',
+    'Book a restored townhouse in North Ayrshire, Scotland — sage kitchen, garden cedar sauna and cold plunge. Superhost · 4.97★.',
   keywords: [
-    'Birmingham Airbnb',
-    'Edgbaston holiday let',
-    'Birmingham short stay',
-    'luxury Airbnb Birmingham',
-    'sauna Airbnb UK',
-    'book a stay Birmingham',
+    'North Ayrshire Airbnb',
+    'Ayrshire holiday let',
+    'North Ayrshire short stay',
+    'luxury Airbnb Scotland',
+    'sauna Airbnb Scotland',
+    'book a stay Ayrshire',
   ],
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     url: SITE_URL,
-    siteName: 'The Edgbaston Townhouse',
-    title: 'The Edgbaston Townhouse — a Birmingham stay',
+    siteName: 'The Ayrshire Townhouse',
+    title: 'The Ayrshire Townhouse — a North Ayrshire stay',
     description:
-      'A restored Victorian retreat: 3 bedrooms, chef’s kitchen, cedar garden sauna and cold plunge. Superhost · 4.97★ · from £245/night.',
+      'A restored Scottish townhouse: sage kitchen, garden cedar sauna and cold plunge. Superhost · 4.97★ · from £245/night.',
     locale: 'en_GB',
     images: [
       {
         url: HERO_IMAGE,
         width: 1200,
         height: 630,
-        alt: 'The Edgbaston Townhouse — Victorian entrance with original staircase',
+        alt: 'The Ayrshire Townhouse — the garden at dusk with cedar sauna and cold plunge',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Edgbaston Townhouse — a Birmingham stay',
+    title: 'The Ayrshire Townhouse — a North Ayrshire stay',
     description:
-      'A restored Victorian retreat with cedar garden sauna & cold plunge. Superhost · 4.97★ · from £245/night.',
+      'A restored Scottish townhouse with a cedar garden sauna & cold plunge. Superhost · 4.97★ · from £245/night.',
     images: [HERO_IMAGE],
   },
   robots: { index: true, follow: true },

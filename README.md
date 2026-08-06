@@ -1,9 +1,8 @@
-# The Edgbaston Townhouse — property tour
+# The Ayrshire Townhouse — property tour
 
-A photography-first editorial site for a restored Victorian stay in Edgbaston,
-Birmingham. Warm ivory canvas, colossal Fraunces display type, film grain, and
-scroll-driven room chapters — the photographs are the heroes; type, colour and
-motion serve them.
+An editorial site for a restored stay in North Ayrshire, Scotland. Warm ivory
+canvas, colossal modern display type, film grain, and a scroll-scrubbed video
+tour of the rooms — the footage is the hero; type, colour and motion serve it.
 
 **Stack (exact):** Next.js 14 (App Router) · GSAP + ScrollTrigger · Lenis · CSS.
 No Three.js. Fraunces (display) / Inter (body) via `next/font`.
