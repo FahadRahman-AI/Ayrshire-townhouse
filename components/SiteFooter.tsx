@@ -6,7 +6,7 @@ export default function SiteFooter() {
       <p className="footer__item">{PROPERTY.name}</p>
       <p className="footer__item footer__item--muted">{PROPERTY.location}</p>
       <a className="footer__item footer__item--muted u-link" href={`mailto:${PROPERTY.contactEmail}`}>
-        Hosted by {PROPERTY.host.name} · since {PROPERTY.host.since}
+        Built by Studio FX
       </a>
     </footer>
   )
